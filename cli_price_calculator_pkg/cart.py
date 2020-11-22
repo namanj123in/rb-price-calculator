@@ -44,14 +44,14 @@ class Cart:
         return cart_data
 
     def load_products(self):
-         '''
+        '''
         Retrieve products from cart JSON and construct corresponding 
         CartProducts(s) returned to and stored by self.__products.
         
         Args:
             (self)
         Returns:
-            [CartProduct]: List of CartProducts from cart JSON.
+            ([CartProduct]): List of CartProducts from cart JSON.
         '''
         products = []
         for product in self.__loaded_cart:
@@ -64,3 +64,55 @@ class Cart:
             products.append(cart_product)
 
         return products
+
+    def get_count(self):
+        '''
+        Returns the amount of total products in cart.
+        
+        Args:
+            (self)
+        Returns:
+            (int): Number of stored products in cart.
+        '''
+        return len(self.__products)
+
+    ##############################  Properties  ################################
+
+    @property
+    def products(self):
+        '''
+        Property-based Getter for products.
+
+        Args:
+            (self)
+        Returns
+            ([CartProduct]): List of CartProduct(s).
+        '''
+        return self.__products
+
+    @property
+    def json_cart(self):
+        '''
+        Property-based Getter for cart JSON file.
+
+        Args:
+            (self)
+        Returns
+            (str): Cart JSON file.
+        '''
+        return self.__json_cart
+
+    ##############################  Overridden  ################################
+
+    def __str__(self):
+        '''
+        String representation (str()) of Cart ->
+        -> all products in the cart 
+        -> further trigger str() for each product. 
+
+        Args:
+            (self)
+        Returns
+            (str): String representation of all stored products in cart. 
+        '''
+        return "\n" + "\n".join([str(product) for product in self.__products])
