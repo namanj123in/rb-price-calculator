@@ -20,3 +20,7 @@ class PriceCalcException(Exception):
 class CLIArgumentException(PriceCalcException):
     def __init__(self, message = None):
         super().__init__(message = message)
+class SchemaException(PriceCalcException):
+    def __init__(self, message = None):
+        super().__init__(message = message)
+
