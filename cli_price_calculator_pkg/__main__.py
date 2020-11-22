@@ -17,6 +17,8 @@ def extract_args():
         None
     Returns:
         (tuple): cart JSON file, base-prices JSON file 
+    Raises:
+        CLIArgumentException - for missing JSON file paths.
     '''
     parser = argparse.ArgumentParser(description="RedBubble CLI price \
                 calculator program. Calculates total price for a 'cart' given \
