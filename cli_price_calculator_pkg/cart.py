@@ -14,7 +14,7 @@ class Cart:
     def __init__(self, json_cart):
         '''
         Constructor for Cart - intialise cart JSON.
-        
+
         Args:
             (str): Path to the cart JSON.
         Returns:
@@ -24,7 +24,16 @@ class Cart:
         self.__loaded_cart = self.load_cart()
 
     def load_cart(self):
-        # Load cart data
+        '''
+        Loads cart JSON returned to and stored by self.__loaded_cart.
+
+        -> Can cause early exit, if unable to load JSON file.
+
+        Args:
+            (self)
+        Returns:
+            (dict): JSON data from cart JSON.
+        '''
         try:
             with open(self.__json_cart, "r") as cart_f:
                 cart_data = json.load(cart_f)
