@@ -9,7 +9,6 @@ class CartProduct:
     cart JSON consisting of its type, options, markup, and quantity.
     -> Check Schema
     '''
-
     def __init__(self, product_type, options, artist_markup, quantity):
         '''
         Initialises below mentioned attributes of a cart product.
@@ -30,6 +29,9 @@ class CartProduct:
             self.__quantity = float(quantity)
         except ValueError:
             sys.exit("Non-numerical markup and/or quantity values supplied")
+
+    def options_tuples(self):
+        return [(k,v) for k,v in self.options.items()]
 
     ##############################  Properties  ################################
 
