@@ -31,7 +31,7 @@ class CartProduct:
         except ValueError:
             sys.exit("Non-numerical markup and/or quantity values supplied")
 
-    #############################   Properties  ################################
+    ##############################  Properties  ################################
 
     @property
     def product_type(self):
@@ -81,7 +81,7 @@ class CartProduct:
         '''
         return self.__quantity
 
-    #############################   Overridden  ################################
+    ##############################  Overridden  ################################
     
     def __str__(self):
         '''
