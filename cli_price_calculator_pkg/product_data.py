@@ -3,12 +3,17 @@ product_data.py
 '''
 import json
 import sys
+from cli_price_calculator_pkg.exceptions import SchemaException
 
 class BaseProductData:
     '''
     Implementation of BaseProductData as a representation of a Redbubble 
     base-prices database.
     - Loads data from provided base-prices JSON.
+    - Generates a nested-dict tree-like structure to retrieve base-price(s) of
+      requested CartProducts independent of the quantity of base-prices. 
+
+      More information in generate_price_tree().
     '''
 
     def __init__(self, json_prices):
@@ -37,6 +42,27 @@ class BaseProductData:
         return prices_data
 
     def generate_price_tree(self):
+        '''
+        Generates a nested-dict structure with product_types as keys at 
+        top-level and base-price values at the bottom-levels ('leaf' values).
+        Each subsequent nested-dict contains keys of a specific option-type.
+
+        Each base value is reachable via a combination of product-type and 
+        option-values, causing the process of retrieving a base-price
+        for a requested CartProduct to be dependent on the number of option
+        types for the CartProduct and not dependent on the number of 
+        base-prices.
+
+        Calls recursive function generate_price_helper().
+
+        More a more visual explanation, check "Key Algorithms" in README.
+
+        Args:
+            (self)
+        Returns:
+            price_tree (nested-dict), 
+            relevant_options (dict) (from product-type to list of option-types) 
+        '''
         price_tree = {}
         relevant_options = {}
         for price_product in self.__loaded_prices:
@@ -71,21 +97,54 @@ class BaseProductData:
         return price_tree, relevant_options
             
     def generate_tree_helper(self, level, options_tuples, base_price):
+        '''
+        Algorithm to recursively build the levels of the price_tree by calling
+        itself for each option-value (like, "small" for option-type "size") 
+        with the next level and remaining option-types as arguments.
+
+        Stops when all option-types for the current product are exhausted, and
+        then uses the base-prices as values (at the last level).
+
+        Args:
+            level (dict): the current dict in price_tree
+            options_tuples ([tuple]): list of tuples with first value being
+                                      option-type (ex. "size") and second value
+                                      being a list of corresponding options
+                                      (like ["small", "big"]), corresponding to
+                                      a product-object in base-prices
+            base_price (float): base-price of the product
+
+        Returns:
+            None: (creates the price_tree by reference from argument, level)
+
+        Raises:
+            SchemaException: if the exact same product-type, options
+                             combination is encountered but with a different 
+                             base-price.
+        '''
         first_option_type = options_tuples[0]
         # List of option values ex. 'small', 'xl', corresponding to the first
         # option type of options_tuples
         options = first_option_type[1]
 
         for option in options:
+
             # Base case: last option type
             if len(options_tuples) == 1:
+
                 # For the last option, the values are base-prices i.e, 'leafs'
                 # of the tree
-                level[option] = base_price
+                if option in level and option[level] != base_price:
+                    raise SchemaException("Same base-product has different base values.")
+                else:
+                    level[option] = base_price
             else:
+
                 if option not in level:
                     level[option] = {}
 
+                # Call helper on the remaining option_tuples and the next 
+                # 'level' in the nested-dict structure
                 self.generate_tree_helper(level[option], options_tuples[1:], \
                                             base_price)
 
