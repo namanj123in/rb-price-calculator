@@ -89,3 +89,60 @@ class BaseProductData:
                 self.generate_tree_helper(level[option], options_tuples[1:], \
                                             base_price)
 
+    ##############################  Properties  ################################
+
+    @property
+    def price_tree(self):
+        '''
+        Property-based Getter for price_tree. Returns the dictionary structure,
+        as explained above.
+
+        Args:
+            (self)
+        Returns
+            (dict->dict->..): Nested-Dicts -> price_tree.
+        '''
+        return self.__price_tree
+
+    @property
+    def count(self):
+        '''
+        Property-based Getter for quantity of base-prices.
+
+        Args:
+            (self)
+        Returns
+            (int): Number of base-prices.
+        '''
+        return self.__count
+
+    @property
+    def relevant_options(self):
+        '''
+        Property-based Getter for relevant_options. Returns a dictionary with 
+        product-types as keys and list of distinguishing option types as values.
+
+        To be able to recognise, for a CartProduct, whether a certain option
+        is relevant or not in retrieving its base-price.
+
+        Args:
+            (self)
+        Returns
+            (dict): str:[str], From product-types to option types, 
+                             like {"hoodie": ["size", "colour"]}
+        '''
+        return self.__relevant_options
+
+    def __str__(self):
+        '''
+        String representation (str()) of product_data. Since, price_tree is a 
+        nested-dict structure, its default __str__ representation can be
+        returned and will be used to represent product_data.
+
+        Args:
+            (self)
+        Returns
+            (str): String representation of price_tree.
+        '''
+        return str(self.__price_tree)
+
