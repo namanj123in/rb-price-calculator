@@ -3,6 +3,7 @@ cart.py
 '''
 import json
 import sys
+from cli_price_calculator_pkg.cart_product import CartProduct
 
 class Cart:
     '''
@@ -22,6 +23,7 @@ class Cart:
         '''
         self.__json_cart = json_cart
         self.__loaded_cart = self.load_cart()
+        self.__products = self.load_products()
 
     def load_cart(self):
         '''
@@ -40,3 +42,25 @@ class Cart:
         except:
             sys.exit(f"Something went wrong! Could not load {self.__json_cart}")
         return cart_data
+
+    def load_products(self):
+         '''
+        Retrieve products from cart JSON and construct corresponding 
+        CartProducts(s) returned to and stored by self.__products.
+        
+        Args:
+            (self)
+        Returns:
+            [CartProduct]: List of CartProducts from cart JSON.
+        '''
+        products = []
+        for product in self.__loaded_cart:
+            product_type = product["product-type"]
+            options = product["options"]
+            markup = product["artist-markup"]
+            quantity= product["quantity"]
+
+            cart_product = CartProduct(product_type, options, markup, quantity)
+            products.append(cart_product)
+
+        return products
