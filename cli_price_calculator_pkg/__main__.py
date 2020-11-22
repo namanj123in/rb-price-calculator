@@ -3,6 +3,9 @@
 __main__.py (entry-point)
 CLI Redbubble Coding Test Price Calculator Program
 
+Author: Redbubble Applicant
+Email: me@example.com
+
 README.md for more information.
 '''
 import json
@@ -16,7 +19,7 @@ def extract_args():
     Args:
         None
     Returns:
-        (tuple): cart JSON file, base-prices JSON file 
+        (tuple): Cart JSON file, base-prices JSON file 
     '''
     parser = argparse.ArgumentParser(description="RedBubble CLI price \
                 calculator program. Calculates total price for a 'cart' given \
