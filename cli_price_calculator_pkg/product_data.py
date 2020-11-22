@@ -171,7 +171,8 @@ class BaseProductData:
         option_tuples = filter(lambda x: self.is_relevant(x, product_type), \
                                 option_tuples)
 
-        # Retain the same key order as self.__price_tree 
+        # Retain the same key order as self.__price_tree of CartProduct's 
+        # options
         option_tuples = sorted(option_tuples)
 
         # Follow path from 'root' to 'leaf' via option values of cart product 
