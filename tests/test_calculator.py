@@ -73,7 +73,10 @@ class TestCalculator(unittest.TestCase):
         '''
         Converts each cart file in cart_files to corresponding Cart object,
         and stores in self.__cart. Also, replaces expected_files from files
-        to corresponding JSON objects.
+        to corresponding JSON objects. 
+        
+        Loads base-price files and associates BaseProductData objects with
+        base-price file suffixes to be used for matching cart files later.
 
         Args:
             ([str]): List of absolute path cart JSON files
@@ -109,7 +112,7 @@ class TestCalculator(unittest.TestCase):
         For all loaded test cart files.
 
         Uses expected data files with suffix "-expected" in \fixtures 
-        to determine correct values(s) from key 'count'. 
+        to determine correct values(s) from key 'total_price'. 
 
         Args:
             (self)
