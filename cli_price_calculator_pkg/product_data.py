@@ -21,7 +21,10 @@ class BaseProductData:
         self.__loaded_prices = self.load_prices()
         self.__count = 0
 
-        self.__price_tree, self.__relevant_options = self.generate_price_tree()
+        try:
+            self.__price_tree, self.__relevant_options = self.generate_price_tree()
+        except SchemaException as error:
+            sys.exit(error.message)
 
     def load_prices(self):
         '''
@@ -147,6 +150,57 @@ class BaseProductData:
                 # 'level' in the nested-dict structure
                 self.generate_tree_helper(level[option], options_tuples[1:], \
                                             base_price)
+
+    def cart_product_base_price(self, cart_product):
+        '''
+        Return the base-price of cart_product by tracing the route from
+        its product-type and option-values to the base-price at the final
+        level in the price_tree.
+
+        Args:
+            (CartProduct): Product to get the base-price of
+        Returns:
+            (float): Base-price for the product
+        Raises:
+            SchemaException: If a valid route to a base-price cannot be found
+        '''
+        product_type = cart_product.product_type
+        option_tuples = cart_product.options_tuples()
+
+        # Filter out any option types not found in self.__price_tree
+        option_tuples = filter(lambda x: self.is_relevant(x, product_type), \
+                                option_tuples)
+
+        # Retain the same key order as self.__price_tree of CartProduct's 
+        # options
+        option_tuples = sorted(option_tuples)
+
+        # Follow path from 'root' to 'leaf' via option values of cart product 
+        tree_level = self.__price_tree[product_type]
+        try:
+            for option_tuple in option_tuples[:-1]: 
+                option_val = option_tuple[1]
+                tree_level = tree_level[option_val]
+
+            # The 'leaf' values are the base- -prices, by definition
+            last_option_val = option_tuples[-1][1]
+            base_price = tree_level[last_option_val]
+        except KeyError:
+            raise SchemaException(f"Incorrect option values for - {cart_product}")
+
+        return base_price
+
+    def is_relevant(self, option_tuple, product_type):
+        '''
+        Args:
+            option_tuple (tuple): tuple of option_type, corresponding values
+            product_type (str): type of the product
+        Returns:
+            (Bool): Whether the option type is relevant to the product-type
+                    in respect to the price_tree.
+        '''
+        option_type = option_tuple[0]
+        return option_type in self.__relevant_options[product_type]
 
     ##############################  Properties  ################################
 
