@@ -1,5 +1,8 @@
 '''
 test_cart.py
+To run: `python -m unittest tests.test_cart -v`(from top-level folder)
+
+More information in README.
 '''
 import os
 import json
@@ -18,6 +21,17 @@ class TestCart(unittest.TestCase):
     '''
     @classmethod
     def setUpClass(self):
+        '''
+        Sets up the fixtures of test files and expected-result files to be 
+        used for the following tests.
+
+        Runs once when TestCart is called.
+
+        Args:
+            (self)
+        Returns:
+            None.
+        '''
         # Absolute path to \fixtures
         abs_path = join(os.getcwd(), "tests", "fixtures")
 
@@ -39,22 +53,38 @@ class TestCart(unittest.TestCase):
             expected_files.append(f"{abs_cart_path}-expected.json")
 
         self.__carts = {}
+        # Associate each file with corresponding expected-result file
         self.__expected = dict(zip (abs_cart_files, expected_files))
 
         TestCart.load_test_files(abs_cart_files)
     
     @classmethod
     def load_test_files(self, cart_files):
-        # Load cart files and the corresponding expected files
+        '''
+        Converts each cart file in cart_files to corresponding Cart object,
+        and stores in self.__cart. Also, replaces expected_files from files
+        to corresponding JSON objects.
+
+        Args:
+            ([str]): List of absolute path cart JSON files
+        Returns:
+            None. 
+        '''
         for file in cart_files:
             self.__carts[file] = Cart(file)
 
+        # Replace expected_file(s) to corresponding JSON objects
         for cart_file, expected_file in self.__expected.items():
             with open(expected_file, "r") as expected_f:
                 self.__expected[cart_file] = json.load(expected_f)
 
     @classmethod
     def tearDownClass(self):
+        '''
+        Runs at the end of the TestCart call to perform clean-up duties. No
+        real purpose at the moment as no side-effects take place but might need
+        in the future.
+        '''
         pass
 
 
