@@ -14,9 +14,6 @@ class TestCart(unittest.TestCase):
     '''
     Testing file for class Cart in main package cli_price_calculator_pkg.
 
-    - Tests number of CartProduct(s) stored in Cart.
-    - Tests content of CartProduct(s) using their str() representations.
-
     (The tests are conducted for sample test cart files stored in fixtures.)
     '''
     @classmethod
@@ -33,10 +30,10 @@ class TestCart(unittest.TestCase):
             None.
         '''
         # Absolute path to \fixtures
-        abs_path = join(os.getcwd(), "tests", "fixtures")
+        self.abs_path = join(os.getcwd(), "tests", "fixtures")
 
         # Read relevant test cart files from FILES.json in \fixtures
-        with open(os.path.join(abs_path, "FILES.json"), "r") as f:
+        with open(os.path.join(self.abs_path, "NORMAL_FILES.json"), "r") as f:
             loaded_json = json.load(f)
             cart_files = loaded_json["cart_files"]
 
@@ -45,7 +42,7 @@ class TestCart(unittest.TestCase):
         abs_cart_files = []
         expected_files = []
         for file in cart_files:
-            abs_cart_path = join(abs_path, file)
+            abs_cart_path = join(self.abs_path, file)
             abs_cart_files.append(f"{abs_cart_path}.json")
 
             # For each cart file, the corresponding 'expected' data file is 
@@ -91,8 +88,8 @@ class TestCart(unittest.TestCase):
 
     def test_cart_counts(self):
         '''
-        Tests for the quantity of items stored in Cart(s).
-        For all loaded test cart files.
+        Tests for the quantity of items stored in 'normal' Cart(s) - originally
+        supplied.
 
         Uses expected data files with suffix "-expected" in \fixtures 
         to determine correct values(s) from key 'count'. 
@@ -112,7 +109,7 @@ class TestCart(unittest.TestCase):
 
     def test_cart_contents(self):
         '''
-        Tests for the contents of items stored in Cart(s).
+        Tests for the contents of items stored in normal Cart(s).
         For all loaded test cart files.
 
         Uses expected data files with suffix "-expected" in \fixtures 
@@ -127,8 +124,46 @@ class TestCart(unittest.TestCase):
         '''
         for cart_file in self.__carts:
             real_content_str = str(self.__carts[cart_file]).strip()
-            expected_str = self.__expected[cart_file]["cart_str"].strip()
+            expected_str = self.__expected[cart_file]["cart_str"]
             self.assertEqual(real_content_str, expected_str)
+
+    def test_empty_cart(self):
+        '''
+        Tests for cart count and contents of an empty cart.
+
+        Args:
+            (self)
+        Returns:
+            None.
+        Raises:
+            AssertionError: if test fails.
+        '''
+        self.general_test_runner("cart-0-empty.json")
+                                 "cart-0-empty-expected.json"
+                                 )
+
+    def general_test_runner(self, cart, expected):
+        '''
+        A general test runner for cart count and content tests. 
+        Checks if the cart content and quantity is correct.
+
+        Args:
+            cart (str): JSON file of test cart.
+            expected (str): JSON file of expected test cart file.
+        Returns:
+            None.
+        '''
+        test_cart = join(self.abs_path, cart)
+        expected = join(self.abs_path, expected)
+
+        with open(expected, "r") as f:
+            expected_json = json.load(f)
+
+        cart = Cart(test_cart)
+        self.assertEqual(cart.get_count(), expected_json["count"])
+        self.assertEqual(str(cart).strip(), expected_json["cart_str"])
+
+    
 
 
 

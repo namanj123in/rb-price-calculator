@@ -18,8 +18,6 @@ class TestCalculator(unittest.TestCase):
     Testing file for class CLIPriceCalculator in main 
     package cli_price_calculator_pkg.
 
-    - Tests the calculated totals.
-
     (The tests are conducted for sample test cart and base-price files stored 
     in fixtures.)
     '''
@@ -27,8 +25,7 @@ class TestCalculator(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         '''
-        Sets up the fixtures of test files and expected-result files to be 
-        used for the following tests.
+        Sets up the fixtures of 'normal' test files and expected-result files.
 
         Runs once when TestCalculator is called.
 
@@ -38,11 +35,11 @@ class TestCalculator(unittest.TestCase):
             None.
         '''
         # Absolute path to \fixtures
-        abs_path = join(os.getcwd(), "tests", "fixtures")
+        self.abs_path = join(os.getcwd(), "tests", "fixtures")
 
         # Read relevant test cart and base-price files from FILES.json in 
         # \fixtures
-        with open(os.path.join(abs_path, "FILES.json"), "r") as f:
+        with open(os.path.join(self.abs_path, "NORMAL_FILES.json"), "r") as f:
             loaded_json = json.load(f)
             cart_files = loaded_json["cart_files"]
             base_files = loaded_json["base_files"]
@@ -52,13 +49,13 @@ class TestCalculator(unittest.TestCase):
         abs_cart_files = []
         expected_files = []
         for file in cart_files:
-            abs_cart_files.append(f"{join(abs_path, file)}.json")
+            abs_cart_files.append(f"{join(self.abs_path, file)}.json")
 
             # For each cart file, the corresponding 'expected' data file is 
             # identified by the suffix '-expected' 
-            expected_files.append(f"{join(abs_path, file)}-expected.json")
+            expected_files.append(f"{join(self.abs_path, file)}-expected.json")
 
-        base_files = [f"{join(abs_path, file)}.json" for file in base_files]
+        base_files = [f"{join(self.abs_path, file)}.json" for file in base_files]
 
         self.__carts = {}
         self.__base_prices = {}
@@ -108,8 +105,8 @@ class TestCalculator(unittest.TestCase):
 
     def test_totals(self):
         '''
-        Tests for the total calculated values of Cart(s).
-        For all loaded test cart files.
+        Tests for the total calculated values of 'normal' Cart(s) - originally
+        supplied. 
 
         Uses expected data files with suffix "-expected" in \fixtures 
         to determine correct values(s) from key 'total_price'. 
@@ -120,7 +117,6 @@ class TestCalculator(unittest.TestCase):
             None.
         Raises:
             AssertionError: if test fails.
-
         '''
         for cart_file in self.__carts:
             cart = self.__carts[cart_file]
@@ -135,3 +131,58 @@ class TestCalculator(unittest.TestCase):
             expected_total = self.__expected[cart_file]["total_price"]
 
             self.assertEqual(real_total, expected_total)
+
+    def test_total_extra_option(self):
+        '''
+        Tests for calculated value of base-file with additional option of 'gender'.
+
+        Args:
+            (self)
+        Returns:
+            None.
+        Raises:
+            AssertionError: if test fails.
+        '''
+        self.general_test_runner("cart-10836-custom_option.json",
+                                 "cart-10836-custom_option-expected.json",
+                                 "base-prices-custom_option.json")
+
+    def test_total_empty_cart(self):
+        '''
+        Tests for calculated value of empty cart.
+        
+        Args:
+            (self)
+        Returns:
+            None.
+        Raises:
+            AssertionError: if test fails.
+        '''
+        self.general_test_runner("cart-0-empty.json",
+                                 "cart-0-empty-expected.json",
+                                 "base-prices-normal.json"
+                                )
+
+    def general_test_runner(self, cart, expected, prices):
+        '''
+        A general test runner for total_price tests. Checks if the calculated
+        total price of inoput cart is correct given cart, expected JSON, and 
+        base-prices.
+
+        Args:
+            cart (str): JSON file of test cart.
+            expected (str): JSON file of expected test cart file.
+            prices (str): JSON file of base_prices file.
+        Returns:
+            None.
+        '''
+        test_cart = join(self.abs_path, cart)
+        expected = join(self.abs_path, expected)
+        base_prices = join(self.abs_path, prices)
+
+        calculator = CLIPriceCalculator(Cart(test_cart), BaseProductData(base_prices))
+
+        with open(expected, "r") as f:
+            expected_count = json.load(f)["total_price"]
+
+        self.assertEqual(calculator.cart_total, expected_count)
