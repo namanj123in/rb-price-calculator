@@ -1,5 +1,5 @@
 {
     "count": 1,
-    "cart_str": "Type: hoodie\nOptions: {'size': 'small', 'colour': 'white', 'print-location': 'front'}\nMarkup: 20.0\nQuantity: 1.0",
+    "cart_str": "Type: hoodie\nOptions: ['colour', 'print-location', 'size']\nMarkup: 20\nQuantity: 1",
     "total_price": 4560
 }

@@ -1,5 +1,5 @@
 {   
     "count": 2,    
-    "cart_str": "Type: hoodie\nOptions: {'size': 'small', 'colour': 'dark', 'print-location': 'front'}\nMarkup: 20.0\nQuantity: 2.0\n\nType: sticker\nOptions: {'size': 'small'}\nMarkup: 10.0\nQuantity: 1.0",
+    "cart_str": "Type: hoodie\nOptions: ['colour', 'print-location', 'size']\nMarkup: 20\nQuantity: 2\n\n\nType: sticker\nOptions: ['size']\nMarkup: 10\nQuantity: 1",
     "total_price": 9363
 }

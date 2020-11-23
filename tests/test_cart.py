@@ -103,13 +103,32 @@ class TestCart(unittest.TestCase):
             None.
         Raises:
             AssertionError: if test fails.
-
         '''
         for cart_file in self.__carts:
             real_count = self.__carts[cart_file].get_count()
             expected_file = self.__expected[cart_file]
             expected_count = expected_file["count"]
             self.assertEqual(real_count, expected_count)
+
+    def test_cart_contents(self):
+        '''
+        Tests for the contents of items stored in Cart(s).
+        For all loaded test cart files.
+
+        Uses expected data files with suffix "-expected" in \fixtures 
+        to determine correct values(s) from key 'cart_str'. 
+
+        Args:
+            (self)
+        Returns:
+            None.
+        Raises:
+            AssertionError: if test fails.
+        '''
+        for cart_file in self.__carts:
+            real_content_str = str(self.__carts[cart_file]).strip()
+            expected_str = self.__expected[cart_file]["cart_str"].strip()
+            self.assertEqual(real_content_str, expected_str)
 
 
 
