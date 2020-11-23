@@ -23,7 +23,9 @@ class TestCalculator(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         '''
-        Runs once when TestCalculator is called. Sets absolute path to \fixtures
+        Runs once when TestCalculator is called. 
+        
+        Sets absolute path to tests\fixtures
 
         Args:
             (self)
@@ -42,10 +44,9 @@ class TestCalculator(unittest.TestCase):
         '''
         pass
 
-    def test_totals(self):
+    def test_normal_totals(self):
         '''
-        Tests for the total calculated values of 'normal' Cart(s) - originally
-        supplied. 
+        Tests for the total calculated values of 'normal' Cart(s) - originally supplied. 
 
         Args:
             (self)
@@ -112,14 +113,18 @@ class TestCalculator(unittest.TestCase):
             prices (str): JSON file of base_prices file.
         Returns:
             None.
+        Raises:
+            AssertionError
         '''
         test_cart = join(self.abs_path, cart)
         expected = join(self.abs_path, expected)
         base_prices = join(self.abs_path, prices)
 
-        calculator = CLIPriceCalculator(Cart(test_cart), BaseProductData(base_prices))
+        cart = Cart(test_cart)
+        base_prices = BaseProductData(base_prices)
+        calculator = CLIPriceCalculator(cart, base_prices)
 
         with open(expected, "r") as f:
-            expected_count = json.load(f)["total_price"]
+            expected_total = json.load(f)["total_price"]
 
-        self.assertEqual(calculator.cart_total, expected_count)
+        self.assertEqual(calculator.cart_total, expected_total)

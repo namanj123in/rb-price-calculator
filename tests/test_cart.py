@@ -19,7 +19,9 @@ class TestCart(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         '''
-        Runs once when TestCart is called. Sets absolute path to \fixtures\
+        Runs once when TestCart is called. 
+        
+        Sets absolute path to tests\fixtures
 
         Args:
             (self)
@@ -39,10 +41,9 @@ class TestCart(unittest.TestCase):
 
     ################################  TESTS  ##################################
 
-    def test_cart_counts(self):
+    def test_normal_cart_counts(self):
         '''
-        Tests for the quantity of items stored in 'normal' Cart(s) - originally
-        supplied.
+        Tests for the content and quantity of items stored in 'normal' Cart(s) - originally supplied.
 
         Uses expected data files with suffix "-expected" in \fixtures 
         to determine correct values(s) from key 'count'. 
@@ -89,6 +90,8 @@ class TestCart(unittest.TestCase):
             expected (str): JSON file of expected test cart file.
         Returns:
             None.
+        Raises:
+            AssertionError
         '''
         test_cart = join(self.abs_path, cart)
         expected = join(self.abs_path, expected)
