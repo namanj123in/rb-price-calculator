@@ -58,7 +58,7 @@ class BaseProductData:
 
         Calls recursive function generate_price_helper().
 
-        More a more visual explanation, check "Key Algorithms" in README.
+        For a more visual explanation, check "Key Algorithms" in README.
 
         Args:
             (self)
@@ -115,7 +115,7 @@ class BaseProductData:
                                       being a list of corresponding options
                                       (like ["small", "big"]), corresponding to
                                       a product-object in base-prices
-            base_price (float): base-price of the product
+            base_price (int): base-price of the product
 
         Returns:
             None: (creates the price_tree by reference from argument, level)
@@ -160,7 +160,7 @@ class BaseProductData:
         Args:
             (CartProduct): Product to get the base-price of
         Returns:
-            (float): Base-price for the product
+            (int): Base-price for the product
         Raises:
             SchemaException: If a valid route to a base-price cannot be found
         '''
@@ -192,6 +192,8 @@ class BaseProductData:
 
     def is_relevant(self, option_tuple, product_type):
         '''
+        Used in filter lambda function in cart_product_base_price() above.
+        
         Args:
             option_tuple (tuple): tuple of option_type, corresponding values
             product_type (str): type of the product
