@@ -63,7 +63,7 @@ class TestCart(unittest.TestCase):
             expected = f"{cart_file}-expected.json"
             cart_file = f"{cart_file}.json"
         
-        self.general_test_runner(cart_file, expected)
+            self.general_test_runner(cart_file, expected)
 
     def test_empty_cart(self):
         '''
@@ -100,6 +100,7 @@ class TestCart(unittest.TestCase):
             expected_json = json.load(f)
 
         cart = Cart(test_cart)
+
         self.assertEqual(cart.get_count(), expected_json["count"])
         self.assertEqual(str(cart).strip(), expected_json["cart_str"])
 
