@@ -21,10 +21,7 @@ class BaseProductData:
         self.__loaded_prices = self.load_prices()
         self.__count = 0
 
-        try:
-            self.__price_tree, self.__relevant_options = self.generate_price_tree()
-        except SchemaException as error:
-            sys.exit(error.message)
+        self.__price_tree, self.__relevant_options = self.generate_price_tree()
 
     def load_prices(self):
         '''
@@ -137,7 +134,7 @@ class BaseProductData:
 
                 # For the last option, the values are base-prices i.e, 'leafs'
                 # of the tree
-                if option in level and option[level] != base_price:
+                if option in level and level[option] != base_price:
                     raise SchemaException("Same base-product has different base values.")
                 else:
                     level[option] = base_price
