@@ -20,9 +20,8 @@ http://take-home-test.herokuapp.com/new-product-engineer
 ├── tests                
     ├── fixtures
         └── [sample tests and expected *.json files]
-    ├── test_case.py
-    ├── test_calculator.py
-    └── test_product_data.py
+    ├── test_cart.py
+    └── test_calculator.py
 ├── .gitignore           
 ├── README.md           
 └── setup.py
@@ -61,7 +60,7 @@ For all commands mentioned, keyword `python` will serve as a placeholder for `py
 
 ## Testing
 
-Automated testing is implemented via. Python's `unittest` framework. All testing files are located under directory `tests`. Test classes are split across the `Cart (cart.py)`, `BaseProductData (product_data.py)`, and `CLIPriceCalculator (cli_price_calculator.py)` classes inside `cli_price_calculator_pkg` package directory.
+Automated testing is implemented via. Python's `unittest` framework. All testing files are located under directory `tests`. Test classes `(test_cart.py & test_calculator.py)` are split across the `Cart (cart.py)` and `CLIPriceCalculator (cli_price_calculator.py)` classes inside `cli_price_calculator_pkg` package directory.
 
 Sample testing files and corresponding expected data are stored under `.\tests\fixtures` as JSON files.
 
@@ -79,4 +78,52 @@ Example:
 python -m unittest tests.test_cart -v
 ```
 
+## Testing-Workflow
+For each test cart_*.json file, the hyphenated suffix must match the suffix of a corresponding test base-price file. And there must be a corresponding file with the same name but with "-expected" appended containing the correct attributes for that cart file. 
+
+For instance:
+```bash
+    cart-4560-normal.json - [cart file]
+    cart-4560-normal-expected.json - [expected properties of cart file] 
+    base-prices-normal.json - [the corresponding base-price file]
+```
+
+To add more test cart files to test-suite, make sure each cart has prefix "cart", for consistency, and only one corresponding "-expected" file. Its suffix must also match that of a base-prices file already there or you can add a new one. 
+[Again sample test files already present in `.\tests\fixtures`]
 ## Key Algorithms
+#####Price-tree generation algorithm in `product_data.py`
+
+The algorithm generates a nested-dict structure for the supplied base-price JSON file. At the top level, the keys refer to the base product-types, and at each level below, the keys consist of the subsequent option-values based on sorted order of option-types. For the price-tree below, the order for "hoodie" is "colour" -> "size" and then base-prices. 
+
+Therefore, for a small, white hoodie, the base-price is located at `price_tree['hoodie']['white']['small']`. **Essentially, once the tree is generated, the time to retrieve the base-price of a cart-item is not dependent on the number of base-prices.**
+
+The generated price-tree for `base-prices-normal.json`:
+```json
+    {
+    "hoodie": {
+        "white": {
+            "small": 3800,
+            "medium": 3800,
+            "large": 3848,
+            "xl": 4108,
+            "2xl": 4108,
+            "3xl": 4108
+        },
+        "dark": {
+            "small": 3800,
+            "medium": 3800,
+            "large": 4212,
+            "xl": 4368,
+            "2xl": 4368,
+            "3xl": 4368
+        }
+    },
+    "sticker": {
+        "small": 221,
+        "medium": 583,
+        "large": 1000,
+        "xl": 1417
+    },
+    "leggings": 5000
+}
+```
