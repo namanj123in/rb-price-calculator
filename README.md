@@ -8,6 +8,7 @@ http://take-home-test.herokuapp.com/new-product-engineer
 
 ## Directory Structure
 ```bash
+├── Schema                   
 ├──  cli_price_calculator_pkg   
     ├── __init__.py
     ├── __main__.py
@@ -24,7 +25,6 @@ http://take-home-test.herokuapp.com/new-product-engineer
     └── test_product_data.py
 ├── .gitignore           
 ├── README.md           
-├── Schema                   
 └── setup.py
 ```
 
