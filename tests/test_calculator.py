@@ -8,6 +8,7 @@ import unittest
 import json
 import os
 from os.path import join
+from cli_price_calculator_pkg.exceptions import SchemaException
 from cli_price_calculator_pkg.cart import Cart
 from cli_price_calculator_pkg.product_data import BaseProductData
 from cli_price_calculator_pkg.cli_price_calculator import CLIPriceCalculator
@@ -100,6 +101,19 @@ class TestCalculator(unittest.TestCase):
                                  "cart-0-empty-expected.json",
                                  "base-prices-normal.json"
                                 )
+
+    def test_repeated_base_val_exception(self):
+        '''
+        Test if SchemaException is raised when a product is encountered in base-prices with different original prices.
+
+        Args:
+            (self)
+        Returns:
+            None.
+        '''
+        base_prices = join(self.abs_path, "base-prices-repeated_val.json")
+        with self.assertRaises(SchemaException):
+            BaseProductData(base_prices)
 
     def general_test_runner(self, cart, expected, prices):
         '''
