@@ -35,7 +35,7 @@ class CLIPriceCalculator:
         Args:
             (self) 
         Returns:
-            (float): The total value of products in cart.
+            (int): The total value of products in cart.
         '''
         cart_total = 0
 
@@ -67,7 +67,7 @@ class CLIPriceCalculator:
         Args:
             (self)
         Returns
-            (float): the total for the (self) cart.
+            (int): the total for the (self) cart.
         '''
         return self.__cart_total
     

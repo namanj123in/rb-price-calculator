@@ -16,8 +16,8 @@ class CartProduct:
         Args:
             product_type (str): Type of product, ex. "hoodie"
             options (dict -> str: [str]): ex. "size": ["small", "large"]
-            artist_markup (float): Percentage increase for artist
-            quantity (float): Quantity
+            artist_markup (int): Percentage increase for artist
+            quantity (int): Quantity
         Returns:
             None.
         '''
@@ -25,10 +25,10 @@ class CartProduct:
         self.__options = options
 
         try:
-            self.__artist_markup = float(artist_markup)
-            self.__quantity = float(quantity)
+            self.__artist_markup = int(artist_markup)
+            self.__quantity = int(quantity)
         except ValueError:
-            sys.exit("Non-numerical markup and/or quantity values supplied")
+            sys.exit("Non-Integer markup and/or quantity values supplied")
 
     def options_tuples(self):
         return [(k,v) for k,v in self.options.items()]
@@ -67,7 +67,7 @@ class CartProduct:
         Args:
             (self)
         Returns
-            (float): Percentage increase for artist. 
+            (int): Percentage increase for artist. 
         '''
         return self.__artist_markup
 
@@ -79,7 +79,7 @@ class CartProduct:
         Args:
             (self)
         Returns
-            (float): Product quantity. 
+            (int): Product quantity. 
         '''
         return self.__quantity
 
