@@ -19,6 +19,15 @@ class TestCalculator(unittest.TestCase):
 
     (The tests are conducted for sample test cart and base-price files stored 
     in fixtures.)
+
+    Cases:
+        - Tests calculated total cart prices for 'normal' test cart files - ie., 
+          files mentioned in NORMAL_FILES.json.
+        - Tests calculated total cart price after introducing a new option - 
+          - 'gender' - in the options-list for products.
+        - Tests calculated total cart price for an empty cart.
+        - Tests calculated total cart price for a cart with duplicate products
+          with different quantities.
     '''
     @classmethod
     def setUpClass(self):
@@ -55,7 +64,7 @@ class TestCalculator(unittest.TestCase):
         Raises:
             AssertionError: if test fails.
         '''
-        # Read relevant test cart and base-price files from FILES.json in 
+        # Read relevant test cart and base-price files from NORMAL_FILES.json in 
         # \fixtures
         with open(os.path.join(self.abs_path, "NORMAL_FILES.json"), "r") as f:
             normal_cart_files = json.load(f)["cart_files"]
@@ -103,8 +112,7 @@ class TestCalculator(unittest.TestCase):
 
     def test_total_repeated_cart_product(self):
         '''
-        Tests for calculated value of cart with two products with different
-        quantities.
+        Tests for calculated value of cart with two products with different quantities.
 
         Args:
             (self)
@@ -121,7 +129,7 @@ class TestCalculator(unittest.TestCase):
     def general_test_runner(self, cart, expected, prices):
         '''
         A general test runner for total_price tests. Checks if the calculated
-        total price of inoput cart is correct given cart, expected JSON, and 
+        total price of input cart is correct given cart, expected JSON, and 
         base-prices.
 
         Args:

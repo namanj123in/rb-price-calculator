@@ -19,12 +19,12 @@ class BaseProductData:
 
     def __init__(self, json_prices):
         self.__json_prices = json_prices
-        self.__loaded_prices = self.load_prices()
+        self.__loaded_prices = self.__load_prices()
         self.__count = 0
 
-        self.__price_tree, self.__relevant_options = self.generate_price_tree()
+        self.__price_tree, self.__relevant_options = self.__generate_price_tree()
 
-    def load_prices(self):
+    def __load_prices(self):
         '''
         Loads base-prices JSON returned to and stored by self.__loaded_prices.
 
@@ -42,7 +42,7 @@ class BaseProductData:
             sys.exit(f"Something went wrong! Could not load {self.__json_prices}")
         return prices_data
 
-    def generate_price_tree(self):
+    def __generate_price_tree(self):
         '''
         Generates a nested-dict structure with product_types as keys at 
         top-level and base-price values at the bottom-levels ('leaf' values).
@@ -50,9 +50,11 @@ class BaseProductData:
 
         Each base value is reachable via a combination of product-type and 
         option-values, causing the process of retrieving a base-price
-        for a requested CartProduct to be dependent on the number of option
-        types for the CartProduct and not dependent on the number of 
+        for a requested CartProduct to be independent of the number of 
         base-prices.
+
+        Also records option-types relevant in tracing the price_tree for a 
+        product_type -> relevant_options.
 
         Calls recursive function generate_price_helper().
 
@@ -88,7 +90,7 @@ class BaseProductData:
 
             if options_tuples:
                 options_tuples = sorted(options_tuples)
-                self.generate_tree_helper(price_tree[product_type], \
+                self.__generate_tree_helper(price_tree[product_type], \
                                           options_tuples, product_price)
             else:
                 # If no options, the top-level is the last, ie. contains
@@ -97,11 +99,11 @@ class BaseProductData:
 
         return price_tree, relevant_options
             
-    def generate_tree_helper(self, level, options_tuples, base_price):
+    def __generate_tree_helper(self, level, options_tuples, base_price):
         '''
         Algorithm to recursively build the levels of the price_tree by calling
         itself for each option-value (like, "small" for option-type "size") 
-        with the next level and remaining option-types as arguments.
+        with the next 'level' and remaining option-types as arguments.
 
         Stops when all option-types for the current product are exhausted, and
         then uses the base-prices as values (at the last level).
@@ -117,10 +119,9 @@ class BaseProductData:
 
         Returns:
             None: (creates the price_tree by reference from argument, level)
-
         Raises:
-            SchemaException: if the exact same product-type, options
-                             combination is encountered but with a different 
+            SchemaException: if the exact same product-type, options-
+                             -combination is encountered but with a different 
                              base-price.
         '''
         first_option_type = options_tuples[0]
@@ -146,7 +147,7 @@ class BaseProductData:
 
                 # Call helper on the remaining option_tuples and the next 
                 # 'level' in the nested-dict structure
-                self.generate_tree_helper(level[option], options_tuples[1:], \
+                self.__generate_tree_helper(level[option], options_tuples[1:], \
                                             base_price)
 
     def cart_product_base_price(self, cart_product):
@@ -160,13 +161,13 @@ class BaseProductData:
         Returns:
             (int): Base-price for the product
         Raises:
-            SchemaException: If a valid route to a base-price cannot be found
+            SchemaException: If a valid route to a base-price does not exist.
         '''
         product_type = cart_product.product_type
         option_tuples = cart_product.options_tuples()
 
         # Filter out any option types not found in self.__price_tree
-        option_tuples = filter(lambda x: self.is_relevant(x, product_type), \
+        option_tuples = filter(lambda x: self.__is_relevant(x, product_type), \
                                 option_tuples)
 
         # Retain the same key order as self.__price_tree of CartProduct's 
@@ -188,7 +189,7 @@ class BaseProductData:
 
         return base_price
 
-    def is_relevant(self, option_tuple, product_type):
+    def __is_relevant(self, option_tuple, product_type):
         '''
         Used in filter lambda function in cart_product_base_price() above.
         
@@ -213,7 +214,7 @@ class BaseProductData:
         Args:
             (self)
         Returns
-            (dict->dict->..): Nested-Dicts -> price_tree.
+            (dict->dict->..): (Nested-Dicts): price_tree.
         '''
         return self.__price_tree
 
@@ -245,6 +246,8 @@ class BaseProductData:
                              like {"hoodie": ["size", "colour"]}
         '''
         return self.__relevant_options
+
+    ##############################  OVERRIDDEN  ################################
 
     def __str__(self):
         '''

@@ -13,6 +13,8 @@ class CartProduct:
         '''
         Initialises below mentioned attributes of a cart product.
 
+        Might exit early for non-Int markup or quantity values.
+
         Args:
             product_type (str): Type of product, ex. "hoodie"
             options (dict -> str: [str]): ex. "size": ["small", "large"]
@@ -31,6 +33,15 @@ class CartProduct:
             sys.exit("Non-Integer markup and/or quantity values supplied")
 
     def options_tuples(self):
+        '''
+        Returns current product's option values as tuples with first value 
+        being option-type and second value being list of options.
+
+        Args:
+            (self)
+        Returns:
+            (tuple) pairings of option-type and list of corresponding options
+        '''
         return [(k,v) for k,v in self.options.items()]
 
     ##############################  Properties  ################################
@@ -93,7 +104,7 @@ class CartProduct:
         Args:
             (self)
         Returns
-            (str): product-type of (self) product 
+            (str): string representation of cart 
         '''
         option_types = sorted(self.__options.keys())
         return f"\nType: {self.__product_type}\nOptions: {option_types}\n" + \

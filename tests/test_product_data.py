@@ -19,6 +19,12 @@ class TestProductData(unittest.TestCase):
 
     (The tests are conducted for sample test cart and base-price files stored 
     in fixtures.)
+
+    Cases:
+        - Tests cart_product_base_price function by retrieving base values for
+          products in cart-base-values-custom_option.json
+        - Tests for SchemaException in the case a product (with same options)
+          is encountered in base-prices with different prices.
     '''
     @classmethod
     def setUpClass(self):

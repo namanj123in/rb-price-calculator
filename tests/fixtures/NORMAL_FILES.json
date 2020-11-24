@@ -1,3 +1,4 @@
 {
-    "cart_files": ["cart-4560-normal", "cart-9363-normal", "cart-9500-normal", "cart-11356-normal"]
+    "cart_files": ["cart-4560-normal", "cart-9363-normal", "cart-9500-normal", "cart-11356-normal"],
+    "description": "List of files to be automatically checked for cart counts/content and total calculated cart values."
 }

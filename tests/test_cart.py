@@ -15,6 +15,11 @@ class TestCart(unittest.TestCase):
     Testing file for class Cart in main package cli_price_calculator_pkg.
 
     (The tests are conducted for sample test cart files stored in fixtures.)
+
+    Cases:
+        - Tests Cart counts and content for 'normal' test cart files - ie., 
+          files mentioned in NORMAL_FILES.json
+        - Tests Cart count and content for an empty cart file.
     '''
     @classmethod
     def setUpClass(self):
@@ -52,7 +57,7 @@ class TestCart(unittest.TestCase):
         Raises:
             AssertionError: if test fails.
         '''
-        # Read normal test cart files from FILES.json in \fixtures
+        # Read normal test cart files from NORMAL_FILES.json in \fixtures
         with open(os.path.join(self.abs_path, "NORMAL_FILES.json"), "r") as f:
             normal_cart_files = json.load(f)["cart_files"]
 
@@ -73,7 +78,7 @@ class TestCart(unittest.TestCase):
         Raises:
             AssertionError: if test fails.
         '''
-        # Read normal test cart files from FILES.json in \fixtures
+        # Read normal test cart files from NORMAL_FILES.json in \fixtures
         with open(os.path.join(self.abs_path, "NORMAL_FILES.json"), "r") as f:
             normal_cart_files = json.load(f)["cart_files"]
 

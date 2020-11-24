@@ -22,9 +22,9 @@ class CLIPriceCalculator:
         '''
         self.__cart = cart
         self.__prices = prices
-        self.__cart_total = self.calculate_cart_total_cents()
+        self.__cart_total = self.__calculate_cart_total_cents()
         
-    def calculate_cart_total_cents(self):
+    def __calculate_cart_total_cents(self):
         '''
         Return the total cart price. Iterate through all products in the
         Cart, retrieve base-price, and calculate the product total. Add all
