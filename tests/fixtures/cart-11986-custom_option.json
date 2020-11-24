@@ -9,6 +9,16 @@
       },
       "artist-markup": 30,
       "quantity": 2
+    },
+    
+    {
+      "product-type": "sticker",
+      "options": {
+        "size": "large",
+        "print-location": "back"
+      },
+      "artist-markup": 15,
+      "quantity": 1
     }
   ]
   
