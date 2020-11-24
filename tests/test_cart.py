@@ -43,10 +43,7 @@ class TestCart(unittest.TestCase):
 
     def test_normal_cart_counts(self):
         '''
-        Tests for the content and quantity of items stored in 'normal' Cart(s) - originally supplied.
-
-        Uses expected data files with suffix "-expected" in \fixtures 
-        to determine correct values(s) from key 'count'. 
+        Tests for the quantity of items stored in 'normal' Cart(s) - originally supplied.
 
         Args:
             (self)
@@ -63,11 +60,11 @@ class TestCart(unittest.TestCase):
             expected = f"{cart_file}-expected.json"
             cart_file = f"{cart_file}.json"
         
-            self.general_test_runner(cart_file, expected)
+            self.counts_test_runner(cart_file, expected)
 
-    def test_empty_cart(self):
+    def test_normal_cart_content(self):
         '''
-        Tests for cart count and contents of an empty cart.
+        Tests for the content of items stored in 'normal' Cart(s) - originally supplied.
 
         Args:
             (self)
@@ -76,14 +73,53 @@ class TestCart(unittest.TestCase):
         Raises:
             AssertionError: if test fails.
         '''
-        self.general_test_runner("cart-0-empty.json",
-                                 "cart-0-empty-expected.json"
-                                 )
+        # Read normal test cart files from FILES.json in \fixtures
+        with open(os.path.join(self.abs_path, "NORMAL_FILES.json"), "r") as f:
+            normal_cart_files = json.load(f)["cart_files"]
 
-    def general_test_runner(self, cart, expected):
+        for cart_file in normal_cart_files:
+            expected = f"{cart_file}-expected.json"
+            cart_file = f"{cart_file}.json"
+        
+            self.content_test_runner(cart_file, expected)
+
+    def test_empty_cart_count(self):
+        '''
+        Tests for cart count of an empty cart.
+
+        Args:
+            (self)
+        Returns:
+            None.
+        Raises:
+            AssertionError: if test fails.
+        '''
+        self.counts_test_runner("cart-0-empty.json",
+                                "cart-0-empty-expected.json"
+                                )
+
+    def test_empty_cart_content(self):
+        '''
+        Tests for cart contents of an empty cart.
+
+        Args:
+            (self)
+        Returns:
+            None.
+        Raises:
+            AssertionError: if test fails.
+        '''
+        self.content_test_runner("cart-0-empty.json",
+                                 "cart-0-empty-expected.json"
+                                )
+
+    def counts_test_runner(self, cart, expected):
         '''
         A general test runner for cart count and content tests. 
         Checks if the cart content and quantity is correct.
+
+        Uses expected data files with suffix "-expected" in \fixtures 
+        to determine correct values(s) from key 'count'. 
 
         Args:
             cart (str): JSON file of test cart.
@@ -100,8 +136,31 @@ class TestCart(unittest.TestCase):
             expected_json = json.load(f)
 
         cart = Cart(test_cart)
-
         self.assertEqual(cart.get_count(), expected_json["count"])
+
+    def content_test_runner(self, cart, expected):
+        '''
+        A general test runner for cart content tests. 
+        Checks if the cart content is correct based on cart's __str__ representation.
+
+        Uses expected data files with suffix "-expected" in \fixtures 
+        to determine correct values(s) from key 'cart_str'. 
+
+        Args:
+            cart (str): JSON file of test cart.
+            expected (str): JSON file of expected test cart file.
+        Returns:
+            None.
+        Raises:
+            AssertionError
+        '''
+        test_cart = join(self.abs_path, cart)
+        expected = join(self.abs_path, expected)
+
+        with open(expected, "r") as f:
+            expected_json = json.load(f)
+
+        cart = Cart(test_cart)
         self.assertEqual(str(cart).strip(), expected_json["cart_str"])
 
     
