@@ -61,10 +61,13 @@ class CLIArgumentException(PriceCalcException):
     '''
     def __init__(self, message = None):
         super().__init__(message = message)
+        
 class SchemaException(PriceCalcException):
     '''
     Used to represent exceptions related to incompatible schemas for the input
-    JSON files. Like, duplicate products in base-prices with different prices.
+    JSON files. 
+    
+    Like, duplicate products in base-prices with different prices.
     '''
     def __init__(self, message = None):
         super().__init__(message = message)

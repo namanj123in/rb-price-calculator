@@ -21,7 +21,7 @@ class TestCart(unittest.TestCase):
         '''
         Runs once when TestCart is called. 
         
-        Sets absolute path to tests\fixtures
+        Sets absolute path to tests\fixtures.
 
         Args:
             (self)

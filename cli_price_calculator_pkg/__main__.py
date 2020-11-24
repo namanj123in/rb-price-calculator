@@ -46,12 +46,12 @@ def main():
     '''
     Driver program to calculate the total cart price.
 
+    Might exit early in the case of CLIArgumentException.
+
     Args:
         None
     Returns:
-        (int): The total price amount of cart in cents
-    Raises:
-
+        (int): The total price amount of cart in cents.
     '''
     try:
         cart_json, prices_json = extract_args()
