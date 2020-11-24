@@ -101,6 +101,23 @@ class TestCalculator(unittest.TestCase):
                                  "base-prices-normal.json"
                                 )
 
+    def test_total_repeated_cart_product(self):
+        '''
+        Tests for calculated value of cart with two products with different
+        quantities.
+
+        Args:
+            (self)
+        Returns:
+            None.
+        Raises:
+            AssertionError: if test fails.
+        '''
+        self.general_test_runner("cart-repeated_cart_value.json",
+                                 "cart-repeated_cart_value-expected.json",
+                                 "base-prices-custom_option.json"
+                                )
+
     def general_test_runner(self, cart, expected, prices):
         '''
         A general test runner for total_price tests. Checks if the calculated

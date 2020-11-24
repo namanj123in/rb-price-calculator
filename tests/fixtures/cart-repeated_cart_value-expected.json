@@ -1,0 +1,7 @@
+{
+  "count": 4,
+  "cart_str": "Type: hoodie\nOptions: ['colour', 'gender', 'print-location', 'size']\nMarkup: 30\nQuantity: 2\n\n\nType: sticker\nOptions: ['print-location', 'size']\nMarkup: 15\nQuantity: 1\n\n\nType: leggings\nOptions: ['size']\nMarkup: 30\nQuantity: 1\n\n\nType: leggings\nOptions: ['size']\nMarkup: 30\nQuantity: 2",
+  "total_price": 29270
+}
+
+
