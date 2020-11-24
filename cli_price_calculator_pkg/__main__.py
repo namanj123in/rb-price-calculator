@@ -60,12 +60,9 @@ def main():
 
 # ################ CART ####################
     cart = Cart(cart_json)
-    print(cart)
 
 # ########## BASE-PRICES DATA ##############
     prices = BaseProductData(prices_json)
-
-    print(json.dumps(str(prices), indent=8))
 
 # ############ PRICE CALCULATOR ############
     calculator = CLIPriceCalculator(cart, prices)

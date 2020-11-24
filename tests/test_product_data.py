@@ -57,7 +57,7 @@ class TestProductData(unittest.TestCase):
         '''
         cart_file = join(self.abs_path, "cart-base-values-custom_option.json")
         test_prices = join(self.abs_path, "base-prices-custom_option.json")
-        # 3 products in cart
+        # 3 products in cart file
         expected_prices = [3500, 583, 5000]
 
         cart = Cart(cart_file)

@@ -12,6 +12,7 @@ class BaseProductData:
     - Loads data from provided base-prices JSON.
     - Generates a nested-dict tree-like structure to retrieve base-price(s) of
       requested CartProducts independent of the quantity of base-prices. 
+    - Retrieves base-price of a requested CartProduct
 
       More information in generate_price_tree().
     '''
@@ -182,7 +183,7 @@ class BaseProductData:
             # The 'leaf' values are the base- -prices, by definition
             last_option_val = option_tuples[-1][1]
             base_price = tree_level[last_option_val]
-        except KeyError:
+        except (KeyError, IndexError):
             raise SchemaException(f"Incorrect option values for - {cart_product}")
 
         return base_price
