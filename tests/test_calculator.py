@@ -1,5 +1,5 @@
 '''
-test_cart.py
+test_calculator.py
 To run: `python -m unittest tests.test_calculator -v`(from top-level folder)
 
 More information in README.
@@ -8,7 +8,6 @@ import unittest
 import json
 import os
 from os.path import join
-from cli_price_calculator_pkg.exceptions import SchemaException
 from cli_price_calculator_pkg.cart import Cart
 from cli_price_calculator_pkg.product_data import BaseProductData
 from cli_price_calculator_pkg.cli_price_calculator import CLIPriceCalculator
@@ -26,7 +25,7 @@ class TestCalculator(unittest.TestCase):
         '''
         Runs once when TestCalculator is called. 
         
-        Sets absolute path to tests\fixtures
+        Sets absolute path to tests\fixtures.
 
         Args:
             (self)
@@ -70,7 +69,7 @@ class TestCalculator(unittest.TestCase):
             cart_file = f"{cart_file}.json"
 
             self.general_test_runner(cart_file, expected, base_prices)
-
+            
     def test_total_extra_option(self):
         '''
         Tests for calculated value of base-file with additional option of 'gender'.
@@ -82,8 +81,8 @@ class TestCalculator(unittest.TestCase):
         Raises:
             AssertionError: if test fails.
         '''
-        self.general_test_runner("cart-10836-custom_option.json",
-                                 "cart-10836-custom_option-expected.json",
+        self.general_test_runner("cart-11986-custom_option.json",
+                                 "cart-11986-custom_option-expected.json",
                                  "base-prices-custom_option.json")
 
     def test_total_empty_cart(self):
@@ -102,19 +101,6 @@ class TestCalculator(unittest.TestCase):
                                  "base-prices-normal.json"
                                 )
 
-    def test_repeated_base_val_exception(self):
-        '''
-        Test if SchemaException is raised when a product is encountered in base-prices with different original prices.
-
-        Args:
-            (self)
-        Returns:
-            None.
-        '''
-        base_prices = join(self.abs_path, "base-prices-repeated_val.json")
-        with self.assertRaises(SchemaException):
-            BaseProductData(base_prices)
-
     def general_test_runner(self, cart, expected, prices):
         '''
         A general test runner for total_price tests. Checks if the calculated
@@ -132,10 +118,10 @@ class TestCalculator(unittest.TestCase):
         '''
         test_cart = join(self.abs_path, cart)
         expected = join(self.abs_path, expected)
-        base_prices = join(self.abs_path, prices)
+        test_prices = join(self.abs_path, prices)
 
         cart = Cart(test_cart)
-        base_prices = BaseProductData(base_prices)
+        base_prices = BaseProductData(test_prices)
         calculator = CLIPriceCalculator(cart, base_prices)
 
         with open(expected, "r") as f:
