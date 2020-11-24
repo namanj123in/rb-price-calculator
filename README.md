@@ -20,10 +20,13 @@ http://take-home-test.herokuapp.com/new-product-engineer
 ├── tests                
     ├── fixtures
         └── [sample tests and expected *.json files]
+    ├── __init__.py
+    ├── test_calculator.py
     ├── test_cart.py
-    └── test_calculator.py
+    └── test_product_data.py
 ├── .gitignore           
 ├── README.md           
+├── README.pdf           
 └── setup.py
 ```
 
